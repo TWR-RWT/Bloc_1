@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block body %}
+
+    <h1>Liste des produits</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prix</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product[0] }}</td>
+                    <td>{{ product[1] }}</td>
+                    <td>{{ product[3] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+<h1>Créer un produit</h1>
+  <form method="post" action="{{ url_for('create_product') }}">
+    <div class="form-group">
+      <label>Nom</label>
+      <input type="text" class="form-control" name="name" required>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea class="form-control" name="description" required></textarea>
+    </div>
+    <div class="form-group">
+      <label>Prix</label>
+      <input type="number" class="form-control" name="price" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Créer</button>
+  </form>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+# gitignore
+
+# python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info
+dist/
+build/
+
+# env
+.env
+
+# logs
+*.log
