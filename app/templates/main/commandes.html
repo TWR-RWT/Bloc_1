@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block body %}
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Numéro de commande</th>
+      <th scope="col">Date</th>
+      <th scope="col">Statut</th>
+      <th scope="col">Nom du client</th>
+      <th scope="col">Produits</th>
+      <th scope="col">Quantités</th>
+      <th scope="col">Adresse de livraison</th>
+      <th scope="col">Remarques</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for commande in commandes %}
+      <tr>
+        <th scope="row">{{ commande[0] }}</th>
+        <td>{{ commande[1] }}</td>
+        <td>{{ commande[2] }}</td>
+        <td>{{ commande[3] }}</td>
+        <td>{{ commande[4] }}</td>
+        <td>{{ commande[5] }}</td>
+        <td>{{ commande[6] }}</td>
+        <td>{{ commande[7] }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+  
+  <h1>Création de commande</h1>
+  <form method="post" action="{{ url_for('add_order') }}">
+    <div class="form-group">
+      <label for="client">Client :</label>
+      <select class="form-control" id="client" name="client">
+        {% for client in clients %}
+          <option value="{{ client[0] }}">{{ client[1] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="date_commande">Date de commande :</label>
+      <input class="form-control" type="date" id="date_commande" name="date_commande">
+    </div>
+    <div class="form-group">
+      <label for="statut">Statut :</label>
+      <select class="form-control" id="statut" name="statut">
+        <option value="en attente">En attente</option>
+        <option value="en cours">En cours</option>
+        <option value="terminé">Terminé</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="ref_film">Référence du film :</label>
+      <input class="form-control" type="text" id="ref_film" name="ref_film">
+    </div>
+    <div class="form-group">
+      <label for="date_livraison_souhaitee">Date de livraison souhaitée :</label>
+      <input class="form-control" type="date" id="date_livraison_souhaitee" name="date_livraison_souhaitee">
+    </div>
+    <div class="form-group">
+        <label for="date_livraison_reelle">Date de livraison réelle :</label>
+        <input class="form-control" type="date" id="date_livraison_reelle" name="date_livraison_reelle">
+      </div>
+    <div class="form-group">
+      <label for="lignes">Lignes de commande :</label>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for produit in produits %}
+            <tr>
+              <td>{{ produit[1] }}</td>
+                <td>
+                  <input class="form-control" type="number" min="0" value="0" name="quantite_{{ produit[0] }}">
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <button type="submit" class="btn btn-primary">Créer la commande</button>
+  </form>
+{% endblock %}
