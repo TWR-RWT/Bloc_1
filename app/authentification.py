@@ -28,8 +28,8 @@ def create_user():
         try:
             with get_db() as conn:
                 with conn.cursor() as cur:
-                    cur.execute("INSERT INTO rubansoft.users (username, password) VALUES (%s, %s)", (username, hashed_password))
-                    #conn.commit()
+                    cur.execute("INSERT INTO rubansoft.accounts (username, password) VALUES (%s, %s)", (username, hashed_password))
+                    conn.commit()
                     cur.close()#
                     #conn.close()#
             flash('Compte créée avec succès')
@@ -47,7 +47,7 @@ def login():
         with get_db() as conn:
             with conn.cursor() as cur:
                 cur.execute("""
-                        SELECT * FROM assurerplus.accounts 
+                        SELECT * FROM rubansoft.accounts 
                         WHERE username = %s
                     """, (username,))
                 user = cur.fetchone()

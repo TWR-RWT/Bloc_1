@@ -7,6 +7,7 @@
     <tr>
       <th>ID</th>
       <th>Nom</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -14,6 +15,11 @@
       <tr>
         <td>{{ machine[0] }}</td>
         <td>{{ machine[1] }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('supprimer_machine', machine_id=machine[0]) }}">
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+          </form>
+        </td>
       </tr>
     {% endfor %}
   </tbody>

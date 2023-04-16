@@ -9,16 +9,27 @@
         <th>Prénom</th>
         <th>Email</th>
         <th>Siret</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
       {% for client in clients %}
         <tr>
-          <td>{{ client[0] }}</td>
-          <td>{{ client[1] }}</td>
-          <td>{{ client[2] }}</td>
-          <td>{{ client[3] }}</td>
-          <td>{{ client[6] }}</td>
+          <form method="POST" action="{{ url_for('modifier_client', id=client[0]) }}">
+            <td>{{ client[0] }}</td>
+            <td><input type="text" name="nom_client" value="{{ client[1] }}" required></td>
+            <td><input type="text" name="prenom_client" value="{{ client[2] }}" required></td>
+            <td><input type="email" name="email_client" value="{{ client[3] }}" required></td>
+            <td><input type="text" name="siret" value="{{ client[6] }}" required></td>
+            <td>
+              <button type="submit" class="btn btn-primary">Modifier</button>
+            </td>
+          </form>
+          <form method="POST" action="{{ url_for('supprimer_client', id=client[0]) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce client ?')">
+            <td>
+              <button type="submit" class="btn btn-danger">Supprimer</button>
+            </td>
+          </form>
         </tr>
       {% endfor %}
     </tbody>

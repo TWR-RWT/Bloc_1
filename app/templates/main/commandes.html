@@ -10,8 +10,9 @@
       <th scope="col">Nom du client</th>
       <th scope="col">Produits</th>
       <th scope="col">Quantités</th>
-      <th scope="col">Adresse de livraison</th>
-      <th scope="col">Remarques</th>
+      <th scope="col">Date de livraison souhaitee</th>
+      <th scope="col">Date de livraison réelle</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -19,12 +20,41 @@
       <tr>
         <th scope="row">{{ commande[0] }}</th>
         <td>{{ commande[1] }}</td>
-        <td>{{ commande[2] }}</td>
-        <td>{{ commande[3] }}</td>
+        <td>{{ commande[2] }}
+          <form method="post" action="{{ url_for('changer_statut_commande', commande_id=commande[0]) }}" class="statut-commande-form">
+            <select name="statut">
+              <option value="en attente" {% if commande[2] == 'en attente' %}selected{% endif %}>En attente</option>
+              <option value="en cours" {% if commande[2] == 'en cours' %}selected{% endif %}>En cours</option>
+              <option value="terminé" {% if commande[2] == 'terminé' %}selected{% endif %}>Terminé</option>
+            </select>
+            <button type="submit" class="btn btn-danger">Changer le statut</button>
+          </form>
+        </td>
+        <td>
+          {{ commande[3] }}
+        </td>
         <td>{{ commande[4] }}</td>
-        <td>{{ commande[5] }}</td>
-        <td>{{ commande[6] }}</td>
-        <td>{{ commande[7] }}</td>
+        <td>
+          <form method="post" action="{{ url_for('modifier_quantite_ligne_de_commande', commande_id=commande[0], produit_id=commande[8]) }}" class="ligne-de-commande-form">
+            <input type="number" name="quantite" value="{{ commande[5] }}" min="0" step="1"> <!-- Champ d'entrée de texte pour la quantité -->
+            <button type="submit" class="btn btn-danger">Changer la quantité</button>
+          </form>
+        </td>
+        <td>
+          <form method="post" action="{{ url_for('modifier_dates_livraison_commande', commande_id=commande[0]) }}" class="dates-livraison-form">
+            <input type="date" name="date_livraison_souhaitee" value="{{ commande[6] }}"> <!-- Champ d'entrée de texte pour la date de livraison souhaitée -->
+            <br><br><br>
+          </td>
+          <td>
+            <input type="date" name="date_livraison_reelle" value="{{ commande[7] }}"> <!-- Champ d'entrée de texte pour la date de livraison réelle -->
+            <button type="submit" class="btn btn-danger">Changer les dates</button>
+          </form>
+        </td>
+        <td>
+          <form method="post" action="{{ url_for('supprimer_ligne_de_commande', commande_id=commande[0], produit_id=commande[8]) }}">
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+          </form>
+        </td>
       </tr>
     {% endfor %}
   </tbody>

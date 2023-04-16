@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block body %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stocks récupérés</title>
+</head>
+<body>
+    <h1>Productions :</h1>
+	<table>
+        <thead>
+          <tr>
+            <th>ID Production</th>
+            <th>Machine</th>
+            <th>Produit</th>
+            <th>Debut de production</th>
+            <th>Fin de production</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for production in productions %}
+          <tr>
+            <td>{{ production[0] }}</td>
+            <td>{{ production[1] }}</td>
+            <td>{{ production[2] }}</td>
+            <td>{{ production[3] }}</td>
+            <td>
+                <form method="post" action="{{ url_for('modifier_production', id_production=production[0]) }}">
+                    <div class="form-group">
+                      <!--<label for="date_fin_production">Nouvelle date de fin de production :</label>-->
+                      {{ production[4] }}
+                      <input class="form-control" type="date" id="date_fin_production" name="date_fin_production" value="{{ production[4] }}" required>
+                    </div>
+                    
+            </td>
+            <td>
+                <button type="submit" class="btn btn-primary">Modifier la production</button>
+                </form>
+                <form method="post" action="{{ url_for('supprimer_production', id=production[0]) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette production ?')">
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+        <h1>Nouvelle production :</h1>
+        <form method="post" action="{{ url_for('ajouter_production') }}">
+            <div class="form-group">
+                <label for="date_debut_production">Debut de production :</label>
+                <input class="form-control" type="date" id="date_debut_production" name="date_debut_production" required>
+            </div>
+            <div class="form-group">
+                <label for="date_fin_production">Fin de production :</label>
+                <input class="form-control" type="date" id="date_fin_production" name="date_fin_production">
+            </div>
+            <div class="form-group">
+                <label for="produit_id">Produit :</label>
+                <select class="form-control" id="produit_id" name="produit_id" required>
+                    {% for produit in produits %}
+                    <option value="{{ produit[0] }}">{{ produit[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="machine_id">Machine :</label>
+                <select class="form-control" id="machine_id" name="machine_id" required>
+                    {% for machine in machines %}
+                    <option value="{{ machine[0] }}">{{ machine[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Ajouter la production</button>
+        </form>
+
+
+
+
+
+
+
+	<h1>Stocks récupérés :</h1>
+	<table>
+        <thead>
+          <tr>
+            <th>ID Stock</th>
+            <th>ID Produit</th>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for stock in stocks %}
+          <tr>
+            <td>{{ stock[0] }}</td>
+            <td>{{ stock[1] }}</td>
+            <td>{{ stock[2] }}</td>
+            <form method="POST" action="{{ url_for('update_stock', id_stock=stock[0]) }}">
+            <td>
+                <input type="number" name="quantite" value="{{ stock[3] }}" min="0" required>
+            </td>
+            <td>
+                <button type="submit">Modifier</button>
+            </form>
+                <form method="post" action="{{ url_for('supprimer_stock', id_stock=stock[0]) }}">
+                  <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    <h1>Ajouter un stock</h1>
+  <form method="post" action="{{ url_for('ajouter_stock') }}">
+    <div class="form-group">
+      <label for="produit_id">Produit :</label>
+      <select class="form-control" id="produit_id" name="produit_id">
+        {% for produit in produits %}
+          <option value="{{ produit[0] }}">{{ produit[1] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="quantite">Quantité :</label>
+      <input class="form-control" type="number" min="0" id="quantite" name="quantite" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Ajouter le stock</button>
+  </form>
+</body>
+</html>
+{% endblock %}
